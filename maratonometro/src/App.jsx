@@ -1,122 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useSeries } from "./features/series/hooks/useSeries";
+import { SeriesForm } from "./features/series/components/SeriesForm";
+import { SeriesList } from "./features/series/components/SeriesList";
+import { calculateMarathonTime } from "./utils/timeCalculator";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Importa o estado global e as ações do nosso Custom Hook
+  const { seriesList, addSeries, incrementSeason, deleteSeries } = useSeries();
+
+  // Calcula as métricas do Maratonômetro em tempo real
+  const marathonMetrics = calculateMarathonTime(seriesList);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-container">
+      {/* Cabeçalho Principal */}
+      <header className="app-header">
+        <div className="header-content">
+          <h1>🎬 Maratonômetro</h1>
+          <p className="subtitle">O teu painel pessoal de séries assistidas</p>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+      </header>
+
+      {/* Dashboard de Estatísticas (O valor do produto) */}
+      <section className="dashboard-section">
+        <div className="metrics-card">
+          <h2>Tempo Total de Maratona</h2>
+          <p className="time-display">{marathonMetrics.formattedString}</p>
+          {seriesList.length > 0 && (
+            <span className="metrics-footer">
+              Contabilizando <strong>{seriesList.length}</strong> série(s) no
+              teu histórico.
+            </span>
+          )}
+        </div>
+      </section>
+
+      {/* Zona de Interação: Procurar e Adicionar */}
+      <main className="main-content">
+        <section className="search-section">
+          <h2>Adicionar Nova Série</h2>
+          <p className="section-description">
+            Pesquisa pelo nome da série para importar os dados reais
+            automaticamente via API do TMDB.
           </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+          <SeriesForm onAddSeries={addSeries} />
+        </section>
 
-      <div className="ticks"></div>
+        {/* Listagem e Filtros */}
+        <section className="list-section">
+          <h2>As Minhas Séries</h2>
+          <SeriesList
+            seriesList={seriesList}
+            onIncrement={incrementSeason}
+            onDelete={deleteSeries}
+          />
+        </section>
+      </main>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* Rodapé institucional padrão */}
+      <footer className="app-footer">
+        <p>
+          Maratonômetro &copy; {new Date().getFullYear()} - Desenvolvido com
+          React, Vite e API do TMDB.
+        </p>
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;

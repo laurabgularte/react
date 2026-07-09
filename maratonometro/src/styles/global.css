@@ -1,0 +1,499 @@
+/* ==========================================================================
+   1. CONFIGURAÇÕES GLOBAIS E VARIÁVEIS (DESIGN SYSTEM)
+   ========================================================================== */
+:root {
+  --bg-main: #141414; /* Fundo escuro estilo Netflix */
+  --bg-card: #1f1f1f; /* Fundo dos cartões */
+  --bg-input: #2d2d2d; /* Fundo de inputs e elementos secundários */
+  --primary: #e50914; /* Vermelho vibrante de destaque */
+  --primary-hover: #b80710;
+  --text-main: #f5f5f5; /* Texto principal claro */
+  --text-muted: #aaaaaa; /* Texto secundário/cinza */
+  --border-color: #333333;
+
+  /* Cores dos Status */
+  --status-watchlist: #f39c12;
+  --status-watching: #3498db;
+  --status-completed: #2ecc71;
+
+  --font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --radius: 8px;
+  --transition: all 0.25s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 40px;
+}
+
+.app-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ==========================================================================
+   2. HEADER & DASHBOARD (MÉTRICAS)
+   ========================================================================== */
+.app-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.dashboard-section {
+  margin-bottom: 40px;
+}
+
+.metrics-card {
+  background: linear-gradient(135deg, #2c1a1d 0%, var(--bg-card) 100%);
+  border: 1px solid rgba(229, 9, 20, 0.2);
+  padding: 25px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.metrics-card h2 {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.time-display {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.metrics-footer {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.metrics-footer strong {
+  color: var(--primary);
+}
+
+/* ==========================================================================
+   3. LAYOUT PRINCIPAL (GRID)
+   ========================================================================== */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    grid-template-columns: 350px 1fr; /* Formulário à esquerda, lista à direita */
+  }
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  border-left: 4px solid var(--primary);
+  padding-left: 10px;
+}
+
+.section-description {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+/* ==========================================================================
+   4. FORMULÁRIO E AUTOCOMPLETE DA API
+   ========================================================================== */
+.series-form-container {
+  position: relative;
+}
+
+.search-form {
+  display: flex;
+  gap: 10px;
+}
+
+.search-form input {
+  flex: 1;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 12px 15px;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.search-form input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 5px rgba(229, 9, 20, 0.5);
+}
+
+.search-form button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: var(--radius);
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.search-form button:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.search-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dropdown da busca */
+.search-results-dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  list-style: none;
+  z-index: 10;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  gap: 12px;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.result-poster,
+.result-poster-placeholder {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.result-poster-placeholder {
+  background-color: var(--bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.result-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.result-info strong {
+  font-size: 0.95rem;
+}
+
+.result-info span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.add-btn {
+  background-color: rgba(229, 9, 20, 0.15);
+  color: #ff4a54;
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.add-btn:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* ==========================================================================
+   5. LISTAGEM, ABAS E FILTROS
+   ========================================================================== */
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 25px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.filter-tabs button {
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 10px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.filter-tabs button:hover {
+  color: var(--text-main);
+  border-color: var(--text-muted);
+}
+
+.filter-tabs button.active {
+  background-color: var(--text-main);
+  color: var(--bg-main);
+  border-color: var(--text-main);
+  font-weight: bold;
+}
+
+.empty-state {
+  background-color: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  padding: 40px;
+  text-align: center;
+  border-radius: var(--radius);
+  color: var(--text-muted);
+}
+
+/* Grade de Cards */
+.series-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 1000px) {
+  .series-grid {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Dois cards por linha em telas grandes */
+  }
+}
+
+/* ==========================================================================
+   6. CARD DE SÉRIE INDIVIDUAL
+   ========================================================================= */
+.series-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.series-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Destaque sutil com base no status */
+.series-card.watching {
+  border-left: 4px solid var(--status-watching);
+}
+.series-card.watchlist {
+  border-left: 4px solid var(--status-watchlist);
+}
+.series-card.completed {
+  border-left: 4px solid var(--status-completed);
+}
+
+.card-poster {
+  width: 110px;
+  height: 100%;
+  min-height: 165px;
+  object-fit: cover;
+}
+
+.card-poster-placeholder {
+  width: 110px;
+  height: 100%;
+  background-color: var(--bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.card-content {
+  flex: 1;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.series-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.status-badge.watchlist {
+  background-color: rgba(243, 156, 18, 0.15);
+  color: var(--status-watchlist);
+}
+.status-badge.watching {
+  background-color: rgba(52, 148, 219, 0.15);
+  color: var(--status-watching);
+}
+.status-badge.completed {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--status-completed);
+}
+
+.series-info {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 8px 0;
+}
+
+/* Barra de Progresso */
+.progress-container {
+  margin: 10px 0;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.progress-bar-bg {
+  background-color: var(--bg-input);
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background-color: var(--primary);
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.series-card.completed .progress-bar-fill {
+  background-color: var(--status-completed);
+}
+
+/* Botões de Ação do Card */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-increment {
+  flex: 1;
+  background-color: #333333;
+  color: white;
+  border: 1px solid #444444;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-increment:hover:not(:disabled) {
+  background-color: var(--text-main);
+  color: var(--bg-main);
+}
+
+.btn-increment:disabled {
+  background-color: rgba(46, 204, 113, 0.1);
+  color: var(--status-completed);
+  border-color: rgba(46, 204, 113, 0.2);
+  cursor: not-allowed;
+}
+
+.btn-delete {
+  background-color: transparent;
+  color: #777777;
+  border: 1px solid transparent;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-delete:hover {
+  color: #ff4a54;
+  background-color: rgba(255, 74, 84, 0.1);
+}
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+.app-footer {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
