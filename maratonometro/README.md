@@ -20,7 +20,7 @@ O projeto foi organizado isolando a lógica de negócios da camada de apresenta�
 
 ```text
 maratonometro/
-├── .env                     # Variáveis de ambiente necessárias
+├── .env                     # Variáveis de ambiente necessárias (quando se aplicar ao projeto)
 ├── .gitignore               # Arquivos ignorados pelo ecossistema Git
 ├── index.html               # Ponto de entrada HTML5
 ├── package.json             # Manifest do Node.js (dependências e scripts)
