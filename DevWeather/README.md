@@ -1,16 +1,34 @@
-# React + Vite
+# DevWeather 🌤️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **DevWeather** é uma aplicação web moderna para consulta de condições climáticas em tempo real. O projeto foi desenvolvido focado em boas práticas de arquitetura de software frontend, utilizando React e Vite, com total separação de conceitos, tratamento robusto de estados e design responsivo.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Demonstração
 
-## React Compiler
+- **API Utilizada:** [OpenWeatherMap API](https://openweathermap.org/)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React + Vite:** Escolhido pela alta performance no ambiente de desenvolvimento;
+- **Custom Hooks (`useWeather`):** Toda a lógica de estado (`loading`, `error`, `weatherData`) e chamadas assíncronas foram isoladas da camada visual. Isso garante componentes limpos e focados apenas em renderização;
+- **Service Layer (`weatherService`):** Camada de infraestrutura isolada para comunicação com a API. Caso a API de clima mude no futuro, apenas este arquivo precisa ser alterado;
+- **CSS Moderno:** Centralização de cores e espaçamentos usando variáveis CSS nativas (`:root`), facilitando a manutenção e futuras implementações de temas como Light/Dark mode;
+- **Segurança (Variáveis de Ambiente):** Proteção da chave privada da API utilizando arquivos `.env`, seguindo as diretrizes do ecossistema Vite.
+
+---
+
+## 📂 Estrutura de Pastas
+
+```text
+src/
+├── assets/          # Ícones e imagens estáticas (caso se aplique ao projeto)
+├── components/      # Componentes visuais altamente reutilizáveis e puros
+├── hooks/           # Custom hooks contendo a lógica de negócio encapsulada
+├── services/        # Configuração de integração com APIs externas
+├── styles/          # Estilos globais e design tokens centralizados
+├── App.jsx          # Orquestrador principal da UI
+└── main.jsx         # Ponto de entrada da aplicação
+```
